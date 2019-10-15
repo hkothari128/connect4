@@ -1,0 +1,19 @@
+.SlotRow {
+  display: inline-block;
+}
+
+/* .SlotRow:hover {
+  opacity: 0.6;
+} */
+.dropzone {
+  width: auto;
+  height: 10px;
+}
+.dropzone:hover + .Row {
+  opacity: 0.6;
+}
+
+.hovering + .Row {
+  opacity: 0.6;
+  cursor: none;
+}

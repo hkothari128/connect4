@@ -20,7 +20,7 @@ function App() {
         style={{ background: "blue", border: "2px solid" }}
         player="2"
       />
-      <Panel numOfRows={8} numOfCols={10} />
+      <Panel numOfRows={10} numOfCols={8} />
     </div>
   );
 }
