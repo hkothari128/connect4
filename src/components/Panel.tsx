@@ -17,7 +17,13 @@ class Panel extends Component<Props, State> {
       <div className="Panel">
         {this.rows.map((_, idx) => {
           return (
-            <SlotRow key={idx} id={idx} numOfSlots={this.props.numOfCols} />
+            <SlotRow
+              player={this.props.player}
+              key={idx}
+              id={idx}
+              numOfSlots={this.props.numOfCols}
+              handleDrop={this.props.handleDrop}
+            />
           );
         })}
       </div>

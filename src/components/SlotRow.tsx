@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component, ReactNode } from "react";
 import "./SlotRow.css";
 import Slot from "./Slot";
 
@@ -8,40 +8,59 @@ interface Props {
   [key: string]: any;
 }
 
-const drop = e => {
-  e.preventDefault();
-  console.log(e.target);
-  e.target.classList.remove("hovering");
-};
+interface Props {}
+interface State {}
 
-const allowDrop = e => {
-  e.preventDefault();
-  e.target.classList.add("hovering");
-};
+class SlotRow extends Component<Props, State> {
+  state = {
+    row: Array(this.props.numOfSlots).fill(""),
+    emptyIdx: this.props.numOfSlots - 1
+  };
 
-const leaveDrop = e => {
-  e.target.classList.remove("hovering");
-};
-function SlotRow(props: Props) {
-  const row = Array(props.numOfSlots).fill("");
-  console.log(row.length);
-  return (
-    <div className="SlotRow">
-      <div
-        className="dropzone"
-        onDrop={drop}
-        onDragOver={allowDrop}
-        onDragLeave={leaveDrop}
-      ></div>
-      <div className="Row">
-        {row.map((slot, idx) => {
-          return (
-            <Slot key={idx} id={props.id * row.length + idx + 1} style={{}} />
-          );
-        })}
+  render(): ReactNode {
+    return (
+      <div id={this.props.id.toString()} className="SlotRow">
+        <div
+          className="dropzone"
+          onDrop={this.drop}
+          onDragOver={this.allowDrop}
+          onDragLeave={this.leaveDrop}
+        ></div>
+        <div className="Row">
+          {this.state.row.map((slot, idx) => {
+            return <Slot key={idx} id={idx} style={{}} />;
+          })}
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
+
+  drop = (e: any) => {
+    e.preventDefault();
+    // console.log(e.target);
+    this.handleDrop(e.target);
+    e.target.classList.remove("hovering");
+  };
+
+  handleDrop = (target: any) => {
+    const slotRow = target.parentNode;
+    const row = slotRow.getElementsByTagName("div")[1];
+    const slot = row.getElementsByClassName("Slot")[this.state.emptyIdx];
+    console.log(this.props.player.slotStyle);
+    // Object.assign(slot.style, this.props.player.style);
+    slot.style.background = this.props.player.slotStyle.background;
+    this.setState({ emptyIdx: this.state.emptyIdx - 1 });
+    this.props.handleDrop();
+  };
+
+  allowDrop = (e: any) => {
+    e.preventDefault();
+    e.target.classList.add("hovering");
+  };
+
+  leaveDrop = (e: any) => {
+    e.target.classList.remove("hovering");
+  };
 }
 
 export default SlotRow;

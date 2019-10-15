@@ -5,16 +5,16 @@ interface Props {
   [key: string]: any;
 }
 
-const drag = e => {
+const drag = (e: any) => {
   e.dataTransfer.effectAllowed = "copyMove";
   e.dataTransfer.setData("transfer", e.target.id);
   e.target.classList.add("dragging");
 };
-const noAllowDrop = e => {
+const noAllowDrop = (e: any) => {
   e.stopPropagation();
 };
 
-const dropped = e => {
+const dropped = (e: any) => {
   e.target.classList.remove("dragging");
 };
 
