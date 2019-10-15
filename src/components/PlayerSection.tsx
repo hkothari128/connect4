@@ -1,6 +1,7 @@
 import React, { Component, ReactNode } from "react";
-import Slot from "./Slot";
+// import Slot from "./Slot";
 import "./PlayerSection.css";
+import PlayerCoin from "./PlayerCoin";
 
 interface Props {
   player: string;
@@ -27,7 +28,7 @@ class PlayerSection extends Component<Props, State> {
         style={this.props.playerStyle}
       >
         <h1>Player {this.props.player}</h1>
-        <Slot style={this.props.slotStyle} id={this.props.player} />
+        <PlayerCoin style={this.props.slotStyle} id={this.props.player} />
       </div>
     );
   }
