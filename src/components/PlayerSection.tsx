@@ -21,7 +21,11 @@ class PlayerSection extends Component<Props, State> {
     // console.log(this.props.playerStyle, "this.props.playerStyle");
     // console.log(this.props.slotStyle, "this.props.slotStyle");
     return (
-      <div className="PlayerSection" style={this.props.playerStyle}>
+      <div
+        id={this.props.player}
+        className="PlayerSection"
+        style={this.props.playerStyle}
+      >
         <h1>Player {this.props.player}</h1>
         <Slot style={this.props.slotStyle} id={this.props.player} />
       </div>

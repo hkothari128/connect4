@@ -53,11 +53,32 @@ class App extends Component {
     );
   }
   handleDrop = () => {
+    let currPlayerId = this.state.currPlayer;
+    let playerSection = document.querySelector(
+      `div[class="PlayerSection"][id="${currPlayerId}"] > h1`
+    );
+    playerSection.classList.remove("active");
     this.setState(({ currPlayer }) => {
-      const nextPLayer = currPlayer == 1 ? 2 : 1;
+      const nextPLayer = currPlayer === 1 ? 2 : 1;
       return { currPlayer: nextPLayer };
     });
   };
+  componentDidUpdate() {
+    const currPlayerId = this.state.currPlayer;
+    const playerSection = document.querySelector(
+      `div[class="PlayerSection"][id="${currPlayerId}"] > h1`
+    );
+    playerSection.classList.add("active");
+    console.log(playerSection);
+  }
+  componentDidMount() {
+    const currPlayerId = this.state.currPlayer;
+    const playerSection = document.querySelector(
+      `div[class="PlayerSection"][id="${currPlayerId}"] > h1`
+    );
+    playerSection.classList.add("active");
+    console.log(playerSection);
+  }
 }
 
 export default App;
