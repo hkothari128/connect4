@@ -1,8 +1,9 @@
 import React from "react";
 import "./Coin.css";
 interface Props {
-  style: Object;
+  style: object;
   id: any;
+  isDraggable: boolean;
 }
 const drag = (e: any) => {
   e.dataTransfer.effectAllowed = "copyMove";
@@ -20,7 +21,7 @@ const dropped = (e: any) => {
 function PlayerCoin(props: Props) {
   return (
     <div
-      draggable={true}
+      draggable={props.isDraggable}
       onDragStart={drag}
       onDragOver={noAllowDrop}
       onDrop={dropped}

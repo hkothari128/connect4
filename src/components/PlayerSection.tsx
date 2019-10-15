@@ -7,6 +7,7 @@ interface Props {
   player: string;
   slotStyle: object;
   playerStyle: object;
+  active: boolean;
 }
 interface State {}
 
@@ -28,7 +29,11 @@ class PlayerSection extends Component<Props, State> {
         style={this.props.playerStyle}
       >
         <h1>Player {this.props.player}</h1>
-        <PlayerCoin style={this.props.slotStyle} id={this.props.player} />
+        <PlayerCoin
+          style={this.props.slotStyle}
+          id={this.props.player}
+          isDraggable={this.props.active}
+        />
       </div>
     );
   }

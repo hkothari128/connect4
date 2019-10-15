@@ -33,11 +33,13 @@ class App extends Component {
           playerStyle={this.state.player1.playerStyle}
           slotStyle={this.state.player1.slotStyle}
           player={this.state.player1.id}
+          active={this.state.currPlayer === this.state.player1.id}
         />
         <PlayerSection
           playerStyle={this.state.player2.playerStyle}
           slotStyle={this.state.player2.slotStyle}
           player={this.state.player2.id}
+          active={this.state.currPlayer === this.state.player2.id}
         />
         <Panel
           player={
