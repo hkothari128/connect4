@@ -43,14 +43,19 @@ class SlotRow extends Component<Props, State> {
   };
 
   handleDrop = (target: any) => {
-    const slotRow = target.parentNode;
-    const row = slotRow.getElementsByTagName("div")[1];
-    const slot = row.getElementsByClassName("Slot")[this.state.emptyIdx];
-    console.log(this.props.player.slotStyle);
-    // Object.assign(slot.style, this.props.player.style);
-    slot.style.background = this.props.player.slotStyle.background;
-    this.setState({ emptyIdx: this.state.emptyIdx - 1 });
-    this.props.handleDrop();
+    if (this.state.emptyIdx >= 0) {
+      const slotRow = target.parentNode;
+      const row = slotRow.getElementsByTagName("div")[1];
+      const slot = row.getElementsByClassName("Slot")[this.state.emptyIdx];
+      this.getLeft(slotRow, slot);
+      slot.style.background = this.props.player.slotStyle.background;
+      this.setState({ emptyIdx: this.state.emptyIdx - 1 });
+      this.props.handleDrop();
+    }
+  };
+
+  getLeft = (slotRow: any, slot: any) => {
+    console.log(slotRow.id, "<-------slotrowId");
   };
 
   allowDrop = (e: any) => {
