@@ -28,7 +28,7 @@ class SlotRow extends Component<Props, State> {
         ></div>
         <div className="Row">
           {this.state.row.map((slot, idx) => {
-            return <Slot key={idx} id={idx} style={{}} />;
+            return <Slot key={idx} id={idx} style={{}} playerId={null} />;
           })}
         </div>
       </div>
@@ -47,17 +47,12 @@ class SlotRow extends Component<Props, State> {
       const slotRow = target.parentNode;
       const row = slotRow.getElementsByTagName("div")[1];
       const slot = row.getElementsByClassName("Slot")[this.state.emptyIdx];
-      this.getLeft(slotRow, slot);
       slot.style.background = this.props.player.slotStyle.background;
+      slot.playerID = this.props.player.id;
       this.setState({ emptyIdx: this.state.emptyIdx - 1 });
-      this.props.handleDrop();
+      this.props.handleDrop(slotRow, slot);
     }
   };
-
-  getLeft = (slotRow: any, slot: any) => {
-    console.log(slotRow.id, "<-------slotrowId");
-  };
-
   allowDrop = (e: any) => {
     e.preventDefault();
     e.target.classList.add("hovering");
