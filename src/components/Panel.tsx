@@ -31,45 +31,60 @@ class Panel extends Component<Props, State> {
   }
 
   handleDrop = (slotRow: any, slot: any) => {
-    console.log(slotRow, slot);
-    this.getLeftCell(slotRow, slot);
-
+    const left = this.getLeftCell(slotRow, slot);
+    console.log(left);
     this.props.handleDrop();
   };
 
-  getLeftSlotRow = (slotRow: any) => {
+  //NOTE: RIGHT: +X direction, DOWN:+Y Direction
+  getCell = (
+    slotRow: any,
+    slot: any,
+    xDirection: number,
+    yDirection: number
+  ) => {
+    const targetSlotRow = slotRow.parentNode.getElementsByClassName("SlotRow")[
+      parseInt(slotRow.id) + xDirection
+    ];
+
+    const targetCell = targetSlotRow.getElementsByClassName("Slot")[
+      parseInt(slot.id) + yDirection
+    ];
+    return targetCell;
+  };
+
+  /* getLeftSlotRow = (slotRow: any) => {
     console.log(slotRow.id, "<-------slotrowId");
     const leftSlotRow = slotRow.parentNode.getElementsByClassName("SlotRow")[
       slotRow.id - 1
     ];
 
     return leftSlotRow;
-  };
+  }; */
 
   getLeftCell = (slotRow: any, slot: any) => {
-    const leftSlotRow = this.getLeftSlotRow(slotRow);
-    const leftCell = leftSlotRow.getElementsByClassName("Slot")[slot.id];
-    return leftCell;
+    return this.getCell(slotRow, slot, -1, 0);
   };
 
   getLeftDownCell = (slotRow: any, slot: any) => {
-    const leftSlotRow = this.getLeftSlotRow(slotRow);
-    const leftDownCell = leftSlotRow.getElementsByClassName("Slot")[
-      slot.id + 1
-    ];
-    return leftDownCell;
+    return this.getCell(slotRow, slot, -1, +1);
   };
 
   getLeftUpCell = (slotRow: any, slot: any) => {
-    const leftSlotRow = this.getLeftSlotRow(slotRow);
-    const leftUpCell = leftSlotRow.getElementsByClassName("Slot")[slot.id - 1];
-    return leftUpCell;
+    return this.getCell(slotRow, slot, -1, -1);
   };
 
   getDownCell = (slotRow: any, slot: any) => {
-    const leftUpCell = slotRow.getElementsByClassName("Slot")[slot.id + 1];
-    return leftUpCell;
+    return this.getCell(slotRow, slot, 0, +1);
   };
+
+  getLeftMost = (slotRow:any,slot:any){
+    if(slotRow.id>=0 && slot.id<this.props.numOfRows && this.getLeftCell(slotRow,slot).ID == slot.ID) return this.getLeftMost(this.getLeftCell(slotRow,slot),slot)
+  }
+  //From Bottom Left to Top right
+  // checkWinDiagonalUP= (slotRow: any, slot: any) =>{
+  //   while(slotRow.id>=0 && slot.id<this.props.numOfRows && slot.pl)
+  // }
 }
 
 export default Panel;

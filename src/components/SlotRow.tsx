@@ -28,7 +28,15 @@ class SlotRow extends Component<Props, State> {
         ></div>
         <div className="Row">
           {this.state.row.map((slot, idx) => {
-            return <Slot key={idx} id={idx} style={{}} playerId={null} />;
+            return (
+              <Slot
+                key={idx}
+                rowId={this.props.id}
+                id={idx}
+                style={{}}
+                playerID={null}
+              />
+            );
           })}
         </div>
       </div>
