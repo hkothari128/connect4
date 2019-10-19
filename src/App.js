@@ -71,7 +71,6 @@ class App extends Component {
       `div[class="PlayerSection"][id="${currPlayerId}"] > h1`
     );
     playerSection.classList.add("active");
-    console.log(playerSection);
   }
   componentDidMount() {
     const currPlayerId = this.state.currPlayer;

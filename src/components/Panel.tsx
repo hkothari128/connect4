@@ -1,6 +1,7 @@
 import React, { Component, ReactNode } from "react";
 import SlotRow from "./SlotRow";
 import "./Panel.css";
+// import Slot from "./Slot";
 interface Props {
   numOfRows: number;
   numOfCols: number;
@@ -11,6 +12,9 @@ interface State {
 }
 
 class Panel extends Component<Props, State> {
+  state = {
+    slotsToWin: 4
+  };
   rows = Array(this.props.numOfRows).fill("");
   render(): ReactNode {
     return (
@@ -30,19 +34,38 @@ class Panel extends Component<Props, State> {
     );
   }
 
-  handleDrop = (slotRow: any, slot: any) => {
-    const left = this.getLeftCell(slotRow, slot);
-    console.log(left);
+  handleDrop = (slot: any) => {
+    this.checkWin(slot);
     this.props.handleDrop();
   };
 
+  //CHECK FOR WIN
+  checkWin = (slot: any) => {
+    if (this.countRightMost(this.getLeftMost(slot)) === this.state.slotsToWin)
+      console.log("WIN");
+    if (
+      this.countRightUpMost(this.getLeftDownMost(slot)) ===
+      this.state.slotsToWin
+    )
+      console.log("WIN");
+    if (
+      this.countRightDownMost(this.getLeftUpMost(slot)) ===
+      this.state.slotsToWin
+    )
+      console.log("WIN");
+    if (this.countUpMost(this.getDownMost(slot)) === this.state.slotsToWin)
+      console.log("WIN");
+  };
+
+  //GETTING CELL AND SLOT ROW
+
+  getSlotRowForSlot = (slot: any) => {
+    const slotRow = slot.parentNode.parentNode;
+    return slotRow;
+  };
   //NOTE: RIGHT: +X direction, DOWN:+Y Direction
-  getCell = (
-    slotRow: any,
-    slot: any,
-    xDirection: number,
-    yDirection: number
-  ) => {
+  getCell = (slot: any, xDirection: number, yDirection: number) => {
+    const slotRow = this.getSlotRowForSlot(slot);
     const targetSlotRow = slotRow.parentNode.getElementsByClassName("SlotRow")[
       parseInt(slotRow.id) + xDirection
     ];
@@ -53,34 +76,123 @@ class Panel extends Component<Props, State> {
     return targetCell;
   };
 
-  /* getLeftSlotRow = (slotRow: any) => {
-    console.log(slotRow.id, "<-------slotrowId");
-    const leftSlotRow = slotRow.parentNode.getElementsByClassName("SlotRow")[
-      slotRow.id - 1
-    ];
-
-    return leftSlotRow;
-  }; */
-
-  getLeftCell = (slotRow: any, slot: any) => {
-    return this.getCell(slotRow, slot, -1, 0);
+  // GETTING CELLS FROM VARIOUS DIRECTIONS
+  getLeftCell = (slot: any) => {
+    return this.getCell(slot, -1, 0);
+  };
+  getRightCell = (slot: any) => {
+    return this.getCell(slot, +1, 0);
   };
 
-  getLeftDownCell = (slotRow: any, slot: any) => {
-    return this.getCell(slotRow, slot, -1, +1);
+  getLeftDownCell = (slot: any) => {
+    return this.getCell(slot, -1, +1);
+  };
+  getRightUpCell = (slot: any) => {
+    return this.getCell(slot, +1, -1);
   };
 
-  getLeftUpCell = (slotRow: any, slot: any) => {
-    return this.getCell(slotRow, slot, -1, -1);
+  getLeftUpCell = (slot: any) => {
+    return this.getCell(slot, -1, -1);
+  };
+  getRightDownCell = (slot: any) => {
+    return this.getCell(slot, +1, +1);
   };
 
-  getDownCell = (slotRow: any, slot: any) => {
-    return this.getCell(slotRow, slot, 0, +1);
+  getDownCell = (slot: any) => {
+    return this.getCell(slot, 0, +1);
+  };
+  getUpCell = (slot: any) => {
+    return this.getCell(slot, 0, -1);
   };
 
-  getLeftMost = (slotRow:any,slot:any){
-    if(slotRow.id>=0 && slot.id<this.props.numOfRows && this.getLeftCell(slotRow,slot).ID == slot.ID) return this.getLeftMost(this.getLeftCell(slotRow,slot),slot)
-  }
+  //GETTING CELLS FROM EXTREMES
+  getLeftMost = (slot: any) => {
+    if (
+      this.getSlotRowForSlot(slot).id > 0 &&
+      this.getLeftCell(slot).playerID === slot.playerID
+    )
+      return this.getLeftMost(this.getLeftCell(slot));
+
+    return slot;
+  };
+  getLeftDownMost = (slot: any) => {
+    if (
+      slot.id < this.props.numOfCols - 1 &&
+      this.getSlotRowForSlot(slot).id > 0 &&
+      this.getLeftDownCell(slot).playerID === slot.playerID
+    ) {
+      return this.getLeftDownMost(this.getLeftDownCell(slot));
+    }
+
+    return slot;
+  };
+
+  getLeftUpMost = (slot: any) => {
+    if (
+      slot.id > 0 &&
+      this.getSlotRowForSlot(slot).id > 0 &&
+      this.getLeftUpCell(slot).playerID === slot.playerID
+    ) {
+      return this.getLeftUpMost(this.getLeftUpCell(slot));
+    }
+
+    return slot;
+  };
+
+  getDownMost = (slot: any) => {
+    if (
+      slot.id < this.props.numOfCols - 1 &&
+      this.getDownCell(slot).playerID === slot.playerID
+    ) {
+      return this.getDownMost(this.getDownCell(slot));
+    }
+
+    return slot;
+  };
+
+  //COUNTING MATCHING CELLS IN A ROW(ANY DIRECTION)
+  countRightMost = (slot: any) => {
+    if (
+      this.getSlotRowForSlot(slot).id < this.props.numOfRows - 1 &&
+      this.getRightCell(slot).playerID === slot.playerID
+    )
+      return this.countRightMost(this.getRightCell(slot)) + 1;
+
+    return 1;
+  };
+
+  countRightUpMost = (slot: any) => {
+    if (
+      slot.id > 0 &&
+      this.getSlotRowForSlot(slot).id < this.props.numOfRows - 1 &&
+      this.getRightUpCell(slot).playerID === slot.playerID
+    ) {
+      return this.countRightUpMost(this.getRightUpCell(slot)) + 1;
+    }
+
+    return 1;
+  };
+
+  countRightDownMost = (slot: any) => {
+    if (
+      slot.id < this.props.numOfCols - 1 &&
+      this.getSlotRowForSlot(slot).id < this.props.numOfRows - 1 &&
+      this.getRightDownCell(slot).playerID === slot.playerID
+    ) {
+      return this.countRightDownMost(this.getRightDownCell(slot)) + 1;
+    }
+
+    return 1;
+  };
+
+  countUpMost = (slot: any) => {
+    if (slot.id > 0 && this.getUpCell(slot).playerID === slot.playerID) {
+      return this.countUpMost(this.getUpCell(slot)) + 1;
+    }
+
+    return 1;
+  };
+
   //From Bottom Left to Top right
   // checkWinDiagonalUP= (slotRow: any, slot: any) =>{
   //   while(slotRow.id>=0 && slot.id<this.props.numOfRows && slot.pl)
