@@ -41,20 +41,28 @@ class Panel extends Component<Props, State> {
 
   //CHECK FOR WIN
   checkWin = (slot: any) => {
-    if (this.countRightMost(this.getLeftMost(slot)) === this.state.slotsToWin)
+    if (this.countRightMost(this.getLeftMost(slot)) === this.state.slotsToWin) {
       console.log("WIN");
+      this.highlightRight(this.getLeftMost(slot), 0);
+    }
     if (
       this.countRightUpMost(this.getLeftDownMost(slot)) ===
       this.state.slotsToWin
-    )
+    ) {
       console.log("WIN");
+      this.highlightRightUp(this.getLeftDownMost(slot), 0);
+    }
     if (
       this.countRightDownMost(this.getLeftUpMost(slot)) ===
       this.state.slotsToWin
-    )
+    ) {
       console.log("WIN");
-    if (this.countUpMost(this.getDownMost(slot)) === this.state.slotsToWin)
+      this.highlightRightDown(this.getLeftUpMost(slot), 0);
+    }
+    if (this.countUpMost(this.getDownMost(slot)) === this.state.slotsToWin) {
       console.log("WIN");
+      this.highlightUp(this.getDownMost(slot), 0);
+    }
   };
 
   //GETTING CELL AND SLOT ROW
@@ -191,6 +199,31 @@ class Panel extends Component<Props, State> {
     }
 
     return 1;
+  };
+
+  // Highlighting cells that won
+  highlightRight = (slot: any, count: number) => {
+    slot.classList.add("Winner");
+    if (count + 1 === this.state.slotsToWin) return;
+    this.highlightRight(this.getRightCell(slot), count + 1);
+  };
+
+  highlightRightUp = (slot: any, count: number) => {
+    slot.classList.add("Winner");
+    if (count + 1 === this.state.slotsToWin) return;
+    this.highlightRightUp(this.getRightUpCell(slot), count + 1);
+  };
+
+  highlightRightDown = (slot: any, count: number) => {
+    slot.classList.add("Winner");
+    if (count + 1 === this.state.slotsToWin) return;
+    this.highlightRightDown(this.getRightDownCell(slot), count + 1);
+  };
+
+  highlightUp = (slot: any, count: number) => {
+    slot.classList.add("Winner");
+    if (count + 1 === this.state.slotsToWin) return;
+    this.highlightUp(this.getUpCell(slot), count + 1);
   };
 
   //From Bottom Left to Top right

@@ -58,7 +58,7 @@ class SlotRow extends Component<Props, State> {
       slot.style.background = this.props.player.slotStyle.background;
       slot.playerID = this.props.player.id;
       this.setState({ emptyIdx: this.state.emptyIdx - 1 });
-      this.props.handleDrop(slotRow, slot);
+      this.props.handleDrop(slot);
     }
   };
   allowDrop = (e: any) => {
