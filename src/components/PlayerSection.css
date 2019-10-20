@@ -1,7 +1,10 @@
 .PlayerSection {
   position: relative;
-  top: -20%;
+  height: inherit;
   margin: 0px 100px;
-  transform: translateY(-50%);
-  /* border: 1px solid blue; */
+}
+.winner {
+  height: 200px;
+
+  color: #2ebd21;
 }

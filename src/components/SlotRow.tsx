@@ -45,9 +45,10 @@ class SlotRow extends Component<Props, State> {
 
   drop = (e: any) => {
     e.preventDefault();
-    // console.log(e.target);
-    this.handleDrop(e.target);
-    e.target.classList.remove("hovering");
+    if (!this.props.isWin) {
+      this.handleDrop(e.target);
+      e.target.classList.remove("hovering");
+    }
   };
 
   handleDrop = (target: any) => {

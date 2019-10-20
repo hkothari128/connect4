@@ -21,7 +21,8 @@ class App extends Component {
         slotStyle: { background: "blue", border: "2px solid" },
         playerStyle: { float: "right" }
       },
-      currPlayer: 1
+      currPlayer: 1,
+      isWin: false
     };
   }
 
@@ -29,17 +30,22 @@ class App extends Component {
     return (
       <div className="App">
         <h1>Connect 4</h1>
+        {/* <div id="winner"></div> */}
         <PlayerSection
           playerStyle={this.state.player1.playerStyle}
           slotStyle={this.state.player1.slotStyle}
           player={this.state.player1.id}
-          active={this.state.currPlayer === this.state.player1.id}
+          active={
+            !this.state.isWin && this.state.currPlayer === this.state.player1.id
+          }
         />
         <PlayerSection
           playerStyle={this.state.player2.playerStyle}
           slotStyle={this.state.player2.slotStyle}
           player={this.state.player2.id}
-          active={this.state.currPlayer === this.state.player2.id}
+          active={
+            !this.state.isWin && this.state.currPlayer === this.state.player2.id
+          }
         />
         <Panel
           player={
@@ -50,22 +56,32 @@ class App extends Component {
           numOfRows={10}
           numOfCols={8}
           handleDrop={this.handleDrop}
+          isWin={this.state.isWin}
         />
       </div>
     );
   }
-  handleDrop = () => {
+  handleDrop = isWin => {
     let currPlayerId = this.state.currPlayer;
     let playerSection = document.querySelector(
       `div[class="PlayerSection"][id="${currPlayerId}"] > h1`
     );
     playerSection.classList.remove("active");
-    this.setState(({ currPlayer }) => {
-      const nextPLayer = currPlayer === 1 ? 2 : 1;
-      return { currPlayer: nextPLayer };
-    });
+    if (isWin) {
+      playerSection.parentElement.querySelector(
+        `div[class="winner"]`
+      ).innerHTML = `<h1>Winner!!!</h1>`;
+
+      this.setState({ isWin: true });
+    } else {
+      this.setState(({ currPlayer }) => {
+        const nextPLayer = currPlayer === 1 ? 2 : 1;
+        return { currPlayer: nextPLayer };
+      });
+    }
   };
   componentDidUpdate() {
+    console.log(this.state.isWin);
     const currPlayerId = this.state.currPlayer;
     const playerSection = document.querySelector(
       `div[class="PlayerSection"][id="${currPlayerId}"] > h1`

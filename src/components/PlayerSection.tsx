@@ -34,6 +34,7 @@ class PlayerSection extends Component<Props, State> {
           id={this.props.player}
           isDraggable={this.props.active}
         />
+        <div className="winner"></div>
       </div>
     );
   }

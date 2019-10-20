@@ -27,6 +27,7 @@ class Panel extends Component<Props, State> {
               id={idx}
               numOfSlots={this.props.numOfCols}
               handleDrop={this.handleDrop}
+              isWin={this.props.isWin}
             />
           );
         })}
@@ -35,8 +36,7 @@ class Panel extends Component<Props, State> {
   }
 
   handleDrop = (slot: any) => {
-    this.checkWin(slot);
-    this.props.handleDrop();
+    this.props.handleDrop(this.checkWin(slot));
   };
 
   //CHECK FOR WIN
@@ -44,6 +44,7 @@ class Panel extends Component<Props, State> {
     if (this.countRightMost(this.getLeftMost(slot)) === this.state.slotsToWin) {
       console.log("WIN");
       this.highlightRight(this.getLeftMost(slot), 0);
+      return true;
     }
     if (
       this.countRightUpMost(this.getLeftDownMost(slot)) ===
@@ -51,6 +52,7 @@ class Panel extends Component<Props, State> {
     ) {
       console.log("WIN");
       this.highlightRightUp(this.getLeftDownMost(slot), 0);
+      return true;
     }
     if (
       this.countRightDownMost(this.getLeftUpMost(slot)) ===
@@ -58,10 +60,12 @@ class Panel extends Component<Props, State> {
     ) {
       console.log("WIN");
       this.highlightRightDown(this.getLeftUpMost(slot), 0);
+      return true;
     }
     if (this.countUpMost(this.getDownMost(slot)) === this.state.slotsToWin) {
       console.log("WIN");
       this.highlightUp(this.getDownMost(slot), 0);
+      return true;
     }
   };
 
